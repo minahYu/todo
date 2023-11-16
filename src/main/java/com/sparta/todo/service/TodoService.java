@@ -37,7 +37,6 @@ public class TodoService {
     public Long updateTodo(TodoRequestDto requestDto, Long id) {
         Todo todo = todoRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 할일이 존재하지 않습니다."));
-        //System.out.println("@@###$$$$$" + requestDto.getContents());
         todo.update(requestDto);
 
         return id;

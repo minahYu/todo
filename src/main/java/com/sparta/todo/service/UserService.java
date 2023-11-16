@@ -10,14 +10,13 @@ import java.util.Optional;
 
 @Component
 public class UserService {
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     public void signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
@@ -26,7 +25,6 @@ public class UserService {
         Optional<User> usernameCheck = userRepository.findByUsername(username);
         System.out.println(usernameCheck);
         if(usernameCheck.isPresent()) {
-            // orElseThrow()?
             throw new IllegalArgumentException("중복된 username이 있습니다.");
         }
 

@@ -2,10 +2,12 @@ package com.sparta.todo.entity;
 
 import com.sparta.todo.dto.SignupRequestDto;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Getter
 @Table(name = "user")
 public class User {
     @Id

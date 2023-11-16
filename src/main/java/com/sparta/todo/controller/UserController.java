@@ -34,26 +34,11 @@ public class UserController {
                 log.error(fieldError.getField());
                 responseEntity = new ResponseEntity(fieldError.getDefaultMessage(), HttpStatus.BAD_REQUEST);
             }
-            System.out.println("회원가입 Fail");
         } else {
             userService.signup(requestDto);
             responseEntity = new ResponseEntity("회원가입을 완료하였습니다.", HttpStatus.OK);
-            System.out.println("회원가입 OK");
         }
         return responseEntity;
-    }
-
-    /*@PostMapping("/login")
-    public String login() {
-
-    }*/
-
-    @GetMapping("/user-test")
-    @ResponseBody
-    public String getMapping() {
-        String test ="test";
-        System.out.println(test);
-        return test;
     }
 
 /*    @GetMapping("/user-info")

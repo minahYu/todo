@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import java.io.IOException;
+
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
@@ -27,10 +29,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException {
-        log.error(request.getRequestURI());
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //log.error(request.getRequestURI());
         String tokenValue = jwtUtil.getJwtFromHeader(request);
-        log.info(tokenValue);
+        //log.info(tokenValue);
         if(StringUtils.hasText(tokenValue)) {
             if(!jwtUtil.jwtValidate(tokenValue)) {
                 log.error("Token Error");
@@ -45,6 +47,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
         }
+        filterChain.doFilter(request, response);
     }
 
     private void setAuthentication(String username) {

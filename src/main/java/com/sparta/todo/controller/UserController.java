@@ -28,11 +28,12 @@ public class UserController {
     public ResponseEntity signup(@Valid @RequestBody SignupRequestDto requestDto, BindingResult bindingResult) {
         System.out.println("Hello " + requestDto.getUsername());
         ResponseEntity responseEntity = null;
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             List<FieldError> fieldErrorList = bindingResult.getFieldErrors();
-            for(FieldError fieldError : fieldErrorList) {
+            for (FieldError fieldError : fieldErrorList) {
                 log.error(fieldError.getField());
                 responseEntity = new ResponseEntity(fieldError.getDefaultMessage(), HttpStatus.BAD_REQUEST);
+
             }
         } else {
             userService.signup(requestDto);

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-@Table(name="todo")
+@Table(name = "todo")
 public class Todo extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

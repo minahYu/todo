@@ -24,7 +24,7 @@ public class UserService {
         // DB에 중복된 username이 있는지 확인
         Optional<User> usernameCheck = userRepository.findByUsername(username);
         System.out.println(usernameCheck);
-        if(usernameCheck.isPresent()) {
+        if (usernameCheck.isPresent()) {
             throw new IllegalArgumentException("중복된 username이 있습니다.");
         }
 

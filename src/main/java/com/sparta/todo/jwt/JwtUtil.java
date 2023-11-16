@@ -52,7 +52,7 @@ public class JwtUtil {
     // Header에서 JWT 가져오기
     public String getJwtFromHeader(HttpServletRequest servletRequest) {
         String bearerToken = servletRequest.getHeader(AUTHORIZATION_HEADER);
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
@@ -62,7 +62,7 @@ public class JwtUtil {
     public boolean jwtValidate(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-        } catch(SignatureException e) {
+        } catch (SignatureException e) {
 
         } catch (ExpiredJwtException e) {
 

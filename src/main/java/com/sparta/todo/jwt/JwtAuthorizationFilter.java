@@ -33,8 +33,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         //log.error(request.getRequestURI());
         String tokenValue = jwtUtil.getJwtFromHeader(request);
         //log.info(tokenValue);
-        if(StringUtils.hasText(tokenValue)) {
-            if(!jwtUtil.jwtValidate(tokenValue)) {
+        if (StringUtils.hasText(tokenValue)) {
+            if (!jwtUtil.jwtValidate(tokenValue)) {
                 log.error("Token Error");
                 return;
             }

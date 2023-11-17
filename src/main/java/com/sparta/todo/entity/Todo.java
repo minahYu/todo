@@ -19,9 +19,17 @@ public class Todo extends Timestamped {
     @Column(name = "contents", nullable = false)
     private String contents;
 
-    public Todo(TodoRequestDto requestDto) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    private String username;
+
+    public Todo(TodoRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+        this.user = user;
+        this.username = user.getUsername();
     }
 
     public void update(TodoRequestDto requestDto) {

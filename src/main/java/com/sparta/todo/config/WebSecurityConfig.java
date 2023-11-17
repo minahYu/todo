@@ -4,6 +4,7 @@ package com.sparta.todo.config;
 import com.sparta.todo.jwt.JwtAuthenticationFilter;
 import com.sparta.todo.jwt.JwtAuthorizationFilter;
 import com.sparta.todo.jwt.JwtUtil;
+import com.sparta.todo.repository.UserRepository;
 import com.sparta.todo.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -26,6 +27,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final UserRepository userRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,19 +35,21 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authorizationManager(AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        System.out.println("jwtAuthenticationFilter");
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
-        filter.setAuthenticationManager(authorizationManager(authenticationConfiguration));
+        filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        System.out.println("in WebSecurityConfig " + jwtUtil + " " + userDetailsService);
         return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
     }
 
@@ -53,8 +57,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable());
 
-        http.sessionManagement((sessionMangement) ->
-                sessionMangement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.sessionManagement((sessionManagement) ->
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
@@ -62,7 +66,6 @@ public class WebSecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        //.requestMatchers("api/auth/**").permitAll()
                         .anyRequest().authenticated()
         );
 

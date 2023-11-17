@@ -3,28 +3,26 @@ package com.sparta.todo.service;
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
 import com.sparta.todo.entity.Todo;
+import com.sparta.todo.entity.User;
 import com.sparta.todo.repository.TodoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.PrintWriter;
 import java.util.List;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class TodoService {
     private final TodoRepository todoRepository;
 
-    public TodoService(TodoRepository todoRepository) {
-        this.todoRepository = todoRepository;
-    }
-
     // 생성
-    public TodoResponseDto createTodo(TodoRequestDto requestDto) {
-        Todo todo = new Todo(requestDto);
-        Todo saveTodo = todoRepository.save(todo);
-        TodoResponseDto responseDto = new TodoResponseDto(saveTodo);
+    public TodoResponseDto createTodo(TodoRequestDto requestDto, User user) {
+        Todo todo = todoRepository.save(new Todo(requestDto, user));
 
-        return responseDto;
+        return new TodoResponseDto(todo);
     }
 
     // 조회

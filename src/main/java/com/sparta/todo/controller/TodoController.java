@@ -2,7 +2,11 @@ package com.sparta.todo.controller;
 
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
+import com.sparta.todo.entity.User;
+import com.sparta.todo.security.UserDetailsImpl;
 import com.sparta.todo.service.TodoService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,13 +20,28 @@ public class TodoController {
         this.todoService = service;
     }
 
-    @PostMapping("/todos")
+    /*@PostMapping("/todos")
     public TodoResponseDto createTodo(@RequestBody TodoRequestDto requestDto) { // 생성
         return todoService.createTodo(requestDto);
+    }*/
+
+    @PostMapping("/todos")
+    public TodoResponseDto createTodo(@RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) { // 생성
+        if (userDetails == null) {
+            System.out.println("userDetails is null");
+            return null; // or throw an exception
+        }
+
+        System.out.println("TodoController.getTodos : 인증 완료");
+        return todoService.createTodo(requestDto, userDetails.getUser());
     }
 
-    @GetMapping("/todos")
-    public List<TodoResponseDto> getTodos() { // 조회
+        @GetMapping("/todos")
+    public List<TodoResponseDto> getTodos(HttpServletRequest request) { // 조회
+        System.out.println("TodoController.getTodos : 인증 완료");
+        User user = (User)request.getAttribute("users");
+        System.out.println("user.getUsername() = " + user.getUsername());
+
         return todoService.getTodos();
     }
 

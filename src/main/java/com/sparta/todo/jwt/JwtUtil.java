@@ -1,13 +1,11 @@
 package com.sparta.todo.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,11 +15,12 @@ import java.util.Base64;
 import java.util.Date;
 
 @Component
+@Slf4j(topic = "JwtUtil")
 public class JwtUtil {
     // JWT 데이터
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZAITON_KEY = "auth";
-    public static final String BEARER_PREFIX = "Bearer";
+    public static final String BEARER_PREFIX = "Bearer ";
     private final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
 
     @Value("${jwt.secret.key}")
@@ -50,22 +49,51 @@ public class JwtUtil {
     }
 
     // Header에서 JWT 가져오기
-    public String getJwtFromHeader(HttpServletRequest servletRequest) {
+    /*public String getJwtFromHeader(HttpServletRequest servletRequest) {
         String bearerToken = servletRequest.getHeader(AUTHORIZATION_HEADER);
+        log.info("Header에서 JWT 가져오기00");
+        *//*if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }*//*
+        *//*substringToken(bearerToken);
+        return null;*//*
+        return substringToken(bearerToken);
+    }
+
+    public String substringToken(String tokenValue) {
+        log.info("substringTOken");
+
+        if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
+            //tokenValue.substring(7);
+            return tokenValue.substring(7);
+
+        }
+        return null;
+    }*/
+    public String getJwtFromHeader(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
     }
 
+
     // JWT 검증
-    public boolean jwtValidate(String token) {
+    public boolean validateToken(String token) {
         try {
+            log.info("jwtUtil");
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-        } catch (SignatureException e) {
-
+            log.info("in jwtValidate");
+            return true;
+        } catch (SecurityException | MalformedJwtException | SignatureException e) {
+            log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
         } catch (ExpiredJwtException e) {
-
+            log.error("Expired JWT token, 만료된 JWT token 입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
         }
         return false;
     }

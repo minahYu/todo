@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -30,18 +32,20 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //log.error(request.getRequestURI());
+        log.info(request.getRequestURI());
         String tokenValue = jwtUtil.getJwtFromHeader(request);
-        //log.info(tokenValue);
+        log.info(tokenValue);
         if (StringUtils.hasText(tokenValue)) {
-            if (!jwtUtil.jwtValidate(tokenValue)) {
+            if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
                 return;
             }
             Claims info = jwtUtil.getUserInfoFromJwt(tokenValue);
+            System.out.println(info+"dasdgadsgaseaaf^^^^&&&&&&&&&&&&");
 
             try {
                 setAuthentication(info.getSubject());
+                log.info("ok.");
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return;
@@ -54,12 +58,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = createAuthentication(username);
         context.setAuthentication(authentication);
+        System.out.println("setAuthentication : " + context);
 
         SecurityContextHolder.setContext(context);
     }
 
     private Authentication createAuthentication(String username) {
+        log.info("createAUthentication " + username);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(userDetails, null);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, null);
     }
 }

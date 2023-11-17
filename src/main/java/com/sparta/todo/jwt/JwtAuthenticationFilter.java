@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
-            //log.info("#################filter: {}", requestDto.getUsername());
+            log.info("헬로#################filter: {}", requestDto.getUsername());
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
                             requestDto.getUsername(),
@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setStatus(401);
 
         // 응답 메시지 생성
-        PrintWriter printWriter = response.getWriter();
-        printWriter.println("username or password does not match.");
+        /*PrintWriter printWriter = response.getWriter();
+        printWriter.println("username or password does not match.");*/
     }
 }

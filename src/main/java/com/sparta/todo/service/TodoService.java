@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +21,17 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     // 생성
-    public TodoResponseDto createTodo(TodoRequestDto requestDto, User user) {
-        Todo todo = todoRepository.save(new Todo(requestDto, user));
+    public List<TodoResponseDto> createTodo(TodoRequestDto requestDto, User user) {
+        Todo saveTodo = todoRepository.save(new Todo(requestDto, user));
 
-        return new TodoResponseDto(todo);
+        List<Todo> todoList = todoRepository.findUserAndTitleByUser(user);
+        List<TodoResponseDto> responseDtoList = new ArrayList<>();
+
+        for(Todo todo : todoList) {
+            responseDtoList.add(new TodoResponseDto(todo));
+        }
+
+        return responseDtoList;
     }
 
     // 조회

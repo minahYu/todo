@@ -20,19 +20,9 @@ public class TodoController {
         this.todoService = service;
     }
 
-    /*@PostMapping("/todos")
-    public TodoResponseDto createTodo(@RequestBody TodoRequestDto requestDto) { // 생성
-        return todoService.createTodo(requestDto);
-    }*/
 
     @PostMapping("/todos")
-    public TodoResponseDto createTodo(@RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) { // 생성
-        if (userDetails == null) {
-            System.out.println("userDetails is null");
-            return null; // or throw an exception
-        }
-
-        System.out.println("TodoController.getTodos : 인증 완료");
+    public List<TodoResponseDto> createTodo(@RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) { // 생성
         return todoService.createTodo(requestDto, userDetails.getUser());
     }
 

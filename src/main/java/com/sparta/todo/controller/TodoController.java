@@ -30,9 +30,9 @@ public class TodoController {
 
     @GetMapping("/todos")
     public List<TodoResponseDto> getTodos(HttpServletRequest request) { // 조회
-        System.out.println("TodoController.getTodos : 인증 완료");
+        /*System.out.println("TodoController.getTodos : 인증 완료");
         User user = (User)request.getAttribute("users");
-        System.out.println("user.getUsername() = " + user.getUsername());
+        System.out.println("user.getUsername() = " + user.getUsername());*/
 
         return todoService.getTodos();
     }

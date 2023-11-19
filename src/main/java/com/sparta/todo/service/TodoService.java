@@ -25,7 +25,7 @@ public class TodoService {
     public List<TodoResponseDto> createTodo(TodoRequestDto requestDto, User user) {
         Todo saveTodo = todoRepository.save(new Todo(requestDto, user));
 
-        List<Todo> todoList = todoRepository.findUserAndTitleByUser(user);
+        List<Todo> todoList = todoRepository.findUserAndTitleByUser(saveTodo.getUser());
         List<TodoResponseDto> responseDtoList = new ArrayList<>();
 
         for(Todo todo : todoList) {

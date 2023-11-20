@@ -44,8 +44,8 @@ public class TodoController {
         return todoService.updateTodo(requestDto, id, userDetails.getUser());
     }
 
-//    @PutMapping("/todos/{id}")
-//    public TodoResponseDto completeTodo(@RequestBody TodoRequestDto requestDto, @PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) { // 수정
-//        return todoService.completeTodo(requestDto, id);
-//    }
+    @PatchMapping("/todos/{id}")
+    public TodoResponseDto completeTodo(@RequestBody TodoRequestDto requestDto, @PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) { // 수정
+        return todoService.completeTodo(requestDto, id, userDetails.getUser());
+    }
 }

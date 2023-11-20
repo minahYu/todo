@@ -84,17 +84,17 @@ public class TodoService {
         return getTodo(id);
     }
 
-    // 수정
-//    @Transactional
-//    public TodoResponseDto completeTodo(TodoRequestDto requestDto, Long id) {
-//        Optional<Todo> findTodo = todoRepository.findById(id);
-//
-//        if(findTodo.isPresent()) {
-//            findTodo.get().update(requestDto);
-//        } else {
-//            throw new IllegalArgumentException("해당하는 할 일이 존재하지 않습니다.");
-//        }
-//
-//        return getTodo(id);
-//    }
+    // 완료
+    @Transactional
+    public TodoResponseDto completeTodo(TodoRequestDto requestDto, Long id, User user) {
+        Optional<Todo> findTodo = todoRepository.findById(id);
+
+        if(findTodo.isPresent() && user.getId().equals(findTodo.get().getUser().getId())) {
+            findTodo.get().complete(requestDto.getComplete());
+        } else {
+            throw new IllegalArgumentException("다른 사용자의 할 일은 완료할 수 없습니다.");
+        }
+
+        return getTodo(id);
+    }
 }

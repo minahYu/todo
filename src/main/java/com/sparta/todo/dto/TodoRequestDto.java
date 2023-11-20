@@ -6,4 +6,5 @@ import lombok.Getter;
 public class TodoRequestDto {
     private String title;
     private String contents;
+    private Boolean complete;
 }

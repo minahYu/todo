@@ -13,6 +13,7 @@ public class TodoResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private String username;
+    private boolean complete;
 
     public TodoResponseDto(Todo todo) {
         this.id = todo.getId();
@@ -21,5 +22,6 @@ public class TodoResponseDto {
         this.createdAt = todo.getCreatedAt();
         this.modifiedAt = todo.getModifiedAt();
         this.username = todo.getUser().getUsername();
+        this.complete = todo.getComplete();
     }
 }

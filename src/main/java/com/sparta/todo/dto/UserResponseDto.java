@@ -1,15 +1,17 @@
+/*
 package com.sparta.todo.dto;
 
 import com.sparta.todo.entity.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-public class UserInfoDto {
+public class UserResponseDto {
+    private Long id;
     private String username;
 
-    public UserInfoDto(User user) {
+    public UserResponseDto(User user) {
+        this.id = user.getId();
         this.username = user.getUsername();
     }
 }
+*/

@@ -1,7 +1,6 @@
 package com.sparta.todo.dto;
 
 import com.sparta.todo.entity.Todo;
-import com.sparta.todo.entity.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

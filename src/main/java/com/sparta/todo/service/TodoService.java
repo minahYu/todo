@@ -72,11 +72,15 @@ public class TodoService {
 
     // 수정
     @Transactional
-    public Long updateTodo(TodoRequestDto requestDto, Long id) {
-        Todo todo = todoRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("선택한 할일이 존재하지 않습니다."));
-        todo.update(requestDto);
+    public TodoResponseDto updateTodo(TodoRequestDto requestDto, Long id) {
+        Optional<Todo> findTodo = todoRepository.findById(id);
 
-        return id;
+        if(findTodo.isPresent()) {
+            findTodo.get().update(requestDto);
+        } else {
+            throw new IllegalArgumentException("해당하는 할 일이 존재하지 않습니다.");
+        }
+
+        return getTodo(id);
     }
 }

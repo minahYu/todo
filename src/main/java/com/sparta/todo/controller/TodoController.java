@@ -2,8 +2,8 @@ package com.sparta.todo.controller;
 
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
-import com.sparta.todo.entity.User;
-import com.sparta.todo.repository.TodoRepository;
+import com.sparta.todo.dto.UserTodoResponseDto;
+import com.sparta.todo.entity.Todo;
 import com.sparta.todo.security.UserDetailsImpl;
 import com.sparta.todo.service.TodoService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,22 +29,12 @@ public class TodoController {
     }
 
     @GetMapping("/todos")
-    public List<TodoResponseDto> getTodos(HttpServletRequest request) { // 조회
-        /*System.out.println("TodoController.getTodos : 인증 완료");
-        User user = (User)request.getAttribute("users");
-        System.out.println("user.getUsername() = " + user.getUsername());*/
-
+    public List<UserTodoResponseDto> getTodos() { // 조회
         return todoService.getTodos();
     }
 
     @GetMapping("/todos/{id}")
-    public TodoResponseDto getTodo(HttpServletRequest request, @PathVariable Long id) { // 조회
-        System.out.println("TodoController.getTodos : 인증 완료");
-/*
-        User user = (User)request.getAttribute("users");
-        System.out.println("user.getUsername() = " + user.getUsername());
-*/
-
+    public TodoResponseDto getTodo(@PathVariable Long id) { // 조회
 
         return todoService.getTodo(id);
     }

@@ -2,24 +2,25 @@ package com.sparta.todo.service;
 
 import com.sparta.todo.dto.TodoRequestDto;
 import com.sparta.todo.dto.TodoResponseDto;
+import com.sparta.todo.dto.UserInfoDto;
+import com.sparta.todo.dto.UserTodoResponseDto;
 import com.sparta.todo.entity.Todo;
 import com.sparta.todo.entity.User;
 import com.sparta.todo.repository.TodoRepository;
+import com.sparta.todo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TodoService {
     private final TodoRepository todoRepository;
+    private final UserRepository userRepository;
 
     // 생성
     public List<TodoResponseDto> createTodo(TodoRequestDto requestDto, User user) {
@@ -36,8 +37,28 @@ public class TodoService {
     }
 
     // 조회
-    public List<TodoResponseDto> getTodos() {
-        return todoRepository.findAll().stream().map(TodoResponseDto::new).toList();
+    public List<UserTodoResponseDto> getTodos() {
+        List<Todo> sortedCards = todoRepository.findAllByOrderByCreatedAtDesc();
+        List<TodoResponseDto> cardList = new ArrayList<>();
+
+        List<User> users = userRepository.findAll();
+        List<UserInfoDto> userList = new ArrayList<>();
+
+        List<UserTodoResponseDto> userCards = new ArrayList<>();
+
+        for(User user : users) {
+            userList.add(new UserInfoDto(user));
+        }
+
+        for(Todo card : sortedCards) {
+            cardList.add(new TodoResponseDto(card));
+        }
+
+        for(UserInfoDto user : userList) {
+            userCards.add(new UserTodoResponseDto(user, cardList));
+        }
+
+        return userCards;
     }
 
     public TodoResponseDto getTodo(Long id) {

@@ -1,9 +1,13 @@
 package com.sparta.todo.entity;
 
 import com.sparta.todo.dto.TodoRequestDto;
+import com.sparta.todo.dto.TodoResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -23,13 +27,10 @@ public class Todo extends Timestamped {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    //private String username;
-
     public Todo(TodoRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
         this.user = user;
-       // this.username = user.getUsername();
     }
 
     public void update(TodoRequestDto requestDto) {

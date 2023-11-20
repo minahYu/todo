@@ -21,11 +21,17 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+
+    @JoinColumn(name = "todoId", nullable = false)
     private Long todoId;
 
     public Comment(CommentRequestDto requestDto, Long todoId, User user) {
         this.contents = requestDto.getContents();
         this.user = user;
         this.todoId = todoId;
+    }
+
+    public void update(CommentRequestDto requestDto) {
+        this.contents = requestDto.getContents();
     }
 }

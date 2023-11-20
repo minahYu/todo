@@ -39,22 +39,18 @@ public class TodoService {
     // 조회
     public List<UserTodoResponseDto> getTodos() {
         List<Todo> sortedCards = todoRepository.findAllByOrderByCreatedAtDesc();
-        List<TodoResponseDto> cardList = new ArrayList<>();
-
         List<User> users = userRepository.findAll();
         List<UserInfoDto> userList = new ArrayList<>();
-
         List<UserTodoResponseDto> userCards = new ArrayList<>();
 
-        for(User user : users) {
+        for(User user : users)
             userList.add(new UserInfoDto(user));
-        }
-
-        for(Todo card : sortedCards) {
-            cardList.add(new TodoResponseDto(card));
-        }
 
         for(UserInfoDto user : userList) {
+            List<TodoResponseDto> cardList = new ArrayList<>();
+            sortedCards.stream()
+                    .filter(card -> card.getUser().getUsername().equals(user.getUsername()))
+                    .forEach(card -> cardList.add(new TodoResponseDto(card)));
             userCards.add(new UserTodoResponseDto(user, cardList));
         }
 

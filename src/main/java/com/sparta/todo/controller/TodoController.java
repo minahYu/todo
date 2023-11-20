@@ -40,7 +40,7 @@ public class TodoController {
     }
 
     @PutMapping("/todos/{id}")
-    public Long updateTodo(@RequestBody TodoRequestDto requestDto, @PathVariable Long id) { // 수정
+    public TodoResponseDto updateTodo(@RequestBody TodoRequestDto requestDto, @PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) { // 수정
         return todoService.updateTodo(requestDto, id);
     }
 }

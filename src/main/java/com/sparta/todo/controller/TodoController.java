@@ -40,12 +40,14 @@ public class TodoController {
     }
 
     @PutMapping("/todos/{id}")
-    public TodoResponseDto updateTodo(@RequestBody TodoRequestDto requestDto, @PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) { // 수정
+    public TodoResponseDto updateTodo(@RequestBody TodoRequestDto requestDto, @PathVariable Long id,
+                                      @AuthenticationPrincipal UserDetailsImpl userDetails) { // 수정
         return todoService.updateTodo(requestDto, id, userDetails.getUser());
     }
 
     @PatchMapping("/todos/{id}")
-    public TodoResponseDto completeTodo(@RequestBody TodoRequestDto requestDto, @PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) { // 수정
+    public TodoResponseDto completeTodo(@RequestBody TodoRequestDto requestDto, @PathVariable Long id,
+                                        @AuthenticationPrincipal UserDetailsImpl userDetails) { // 수정
         return todoService.completeTodo(requestDto, id, userDetails.getUser());
     }
 }

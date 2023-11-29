@@ -1,17 +1,9 @@
 package com.sparta.todo.entity;
 
 import com.sparta.todo.dto.TodoRequestDto;
-import com.sparta.todo.dto.TodoResponseDto;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
-import org.hibernate.annotations.ColumnDefault;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor

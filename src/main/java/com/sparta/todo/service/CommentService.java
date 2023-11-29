@@ -23,11 +23,10 @@ public class CommentService {
     }
 
     // 댓글 작성
-    public CommentResponseDto createComment(CommentRequestDto requestDto,
-                                            Long id, User user) {
+    public CommentResponseDto createComment(CommentRequestDto requestDto, Long id, User user) {
         // 선택한 할 일의 DB 저장 유무 확인
         Optional<Todo> todo = todoRepository.findById(id);
-        if(todo.isPresent()) {
+        if (todo.isPresent()) {
             Comment comment = new Comment(requestDto, id, user);
             commentRepository.save(comment);
 
@@ -46,9 +45,19 @@ public class CommentService {
             comment.get().update(requestDto);
             return new CommentResponseDto(comment.get());
         } else if (comment.isEmpty()) {
-            throw new IllegalArgumentException("해당 댓글이 존재하지 않습니다.");
+            throw new IllegalArgumentException("해당 댓글은 존재하지 않습니다.");
         } else {
             throw new IllegalArgumentException("작성자만 댓글 수정이 가능합니다.");
+        }
+    }
+
+    // 댓글 삭제
+    public void deleteComment(Long id, User user) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("해당 댓글은 존재하지 않습니다."));
+
+        if (comment.getUser().getId().equals(user.getId())) {
+            commentRepository.delete(comment);
         }
     }
 }

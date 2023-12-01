@@ -41,35 +41,12 @@ public class JwtUtil {
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(username)
-                        //.claim(AUTHORIZAITON_KEY, role)
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
                         .compact();
     }
 
-    // Header에서 JWT 가져오기
-    /*public String getJwtFromHeader(HttpServletRequest servletRequest) {
-        String bearerToken = servletRequest.getHeader(AUTHORIZATION_HEADER);
-        log.info("Header에서 JWT 가져오기00");
-        *//*if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }*//*
-        *//*substringToken(bearerToken);
-        return null;*//*
-        return substringToken(bearerToken);
-    }
-
-    public String substringToken(String tokenValue) {
-        log.info("substringTOken");
-
-        if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
-            //tokenValue.substring(7);
-            return tokenValue.substring(7);
-
-        }
-        return null;
-    }*/
     public String getJwtFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {

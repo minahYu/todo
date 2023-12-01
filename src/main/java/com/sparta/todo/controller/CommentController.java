@@ -4,6 +4,7 @@ import com.sparta.todo.dto.CommentRequestDto;
 import com.sparta.todo.dto.CommentResponseDto;
 import com.sparta.todo.security.UserDetailsImpl;
 import com.sparta.todo.service.CommentService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,10 +39,12 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/comments/{id}")
-    public /*ResponseEntity<CommentResponseDto>*/void deleteComment(
+    public ResponseEntity<?> deleteComment(
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         commentService.deleteComment(id, userDetails.getUser());
+
+        return ResponseEntity.ok().body("댓글을 삭제하였습니다.");
     }
 }

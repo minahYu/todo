@@ -22,7 +22,7 @@ public class Comment {
     private User user;
 
 
-    @JoinColumn(name = "todoId", nullable = false)
+    @JoinColumn(name = "todo_id", nullable = false)
     private Long todoId;
 
     public Comment(CommentRequestDto requestDto, Long todoId, User user) {

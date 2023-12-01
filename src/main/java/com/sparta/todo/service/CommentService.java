@@ -5,6 +5,7 @@ import com.sparta.todo.dto.CommentResponseDto;
 import com.sparta.todo.entity.Comment;
 import com.sparta.todo.entity.Todo;
 import com.sparta.todo.entity.User;
+import com.sparta.todo.global.exception.AccessDeniedException;
 import com.sparta.todo.repository.CommentRepository;
 import com.sparta.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,7 @@ public class CommentService {
         } else if (comment.isEmpty()) {
             throw new IllegalArgumentException("해당 댓글은 존재하지 않습니다.");
         } else {
-            throw new IllegalArgumentException("작성자만 댓글 수정이 가능합니다.");
+            throw new AccessDeniedException("작성자만 댓글 수정이 가능합니다.");
         }
     }
 
@@ -56,8 +57,9 @@ public class CommentService {
         Comment comment = commentRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글은 존재하지 않습니다."));
 
-        if (comment.getUser().getId().equals(user.getId())) {
-            commentRepository.delete(comment);
+        if (!comment.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("작성자만 댓글 삭제가 가능합니다.");
         }
+        commentRepository.delete(comment);
     }
 }

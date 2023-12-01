@@ -1,5 +1,6 @@
 package com.sparta.todo.jwt;
 
+import com.sparta.todo.global.exception.NotInvalidTokenException;
 import com.sparta.todo.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -55,7 +56,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = createAuthentication(username);
         context.setAuthentication(authentication);
-        System.out.println("setAuthentication : " + context);
 
         SecurityContextHolder.setContext(context);
     }

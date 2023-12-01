@@ -1,5 +1,6 @@
 package com.sparta.todo.jwt;
 
+import com.sparta.todo.global.exception.NotInvalidTokenException;
 import com.sparta.todo.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;

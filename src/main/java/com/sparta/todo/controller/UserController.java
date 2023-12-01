@@ -29,18 +29,16 @@ public class UserController {
     @PostMapping("/signup") // 회원가입
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequestDto requestDto, BindingResult bindingResult) {
         System.out.println("Hello " + requestDto.getUsername());
-        ResponseEntity responseEntity = null;
+
         if (bindingResult.hasErrors()) {
             List<FieldError> fieldErrorList = bindingResult.getFieldErrors();
             for (FieldError fieldError : fieldErrorList) {
                 log.error(fieldError.getField());
-                responseEntity = new ResponseEntity(fieldError.getDefaultMessage(), HttpStatus.BAD_REQUEST);
-
+                return ResponseEntity.badRequest().body(fieldError.getDefaultMessage());
             }
         }
         userService.signup(requestDto);
 
-        responseEntity = new ResponseEntity("회원가입을 완료하였습니다.", HttpStatus.OK);
-        return responseEntity;
+        return ResponseEntity.ok().body("회원가입을 완료하였습니다");
     }
 }

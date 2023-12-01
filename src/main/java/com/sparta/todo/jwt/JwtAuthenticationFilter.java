@@ -2,6 +2,7 @@ package com.sparta.todo.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.todo.dto.LoginRequestDto;
+import com.sparta.todo.global.exception.NotInvalidTokenException;
 import com.sparta.todo.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

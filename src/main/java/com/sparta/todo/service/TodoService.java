@@ -6,6 +6,7 @@ import com.sparta.todo.dto.UserInfoDto;
 import com.sparta.todo.dto.UserTodoResponseDto;
 import com.sparta.todo.entity.Todo;
 import com.sparta.todo.entity.User;
+import com.sparta.todo.global.exception.AccessDeniedException;
 import com.sparta.todo.repository.TodoRepository;
 import com.sparta.todo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +75,7 @@ public class TodoService {
         if(findTodo.isPresent() && user.getId().equals(findTodo.get().getUser().getId())) {
             findTodo.get().update(requestDto);
         } else {
-            throw new IllegalArgumentException("다른 사용자의 할 일은 수정 불가합니다.");
+            throw new AccessDeniedException("다른 사용자의 할 일은 수정 불가합니다.");
         }
 
         return getTodo(id);
@@ -88,7 +89,7 @@ public class TodoService {
         if(findTodo.isPresent() && user.getId().equals(findTodo.get().getUser().getId())) {
             findTodo.get().complete(requestDto.getComplete());
         } else {
-            throw new IllegalArgumentException("다른 사용자의 할 일은 완료할 수 없습니다.");
+            throw new AccessDeniedException("다른 사용자의 할 일은 완료할 수 없습니다.");
         }
 
         return getTodo(id);

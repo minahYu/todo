@@ -12,6 +12,8 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+@DisplayName("회원가입 요청 DTO 유효성 검사")
 class SignupRequestDtoTest {
 
     SignupRequestDto requestDto;

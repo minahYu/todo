@@ -1,19 +1,16 @@
 package com.sparta.todo.service;
 
-import com.sparta.todo.dto.LoginRequestDto;
 import com.sparta.todo.dto.SignupRequestDto;
 import com.sparta.todo.entity.User;
 import com.sparta.todo.global.exception.DuplicatedInfoException;
-import com.sparta.todo.jwt.JwtUtil;
 import com.sparta.todo.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Component
+@Service
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;

@@ -1,5 +1,6 @@
 package com.sparta.todo.dto;
 
+import com.sparta.todo.CommentTest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -12,7 +13,9 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SignupRequestDtoTest {
+
+@DisplayName("회원가입 요청 DTO 유효성 검사")
+class SignupRequestDtoTest implements CommentTest {
 
     SignupRequestDto requestDto;
     ValidatorFactory factory;
@@ -28,11 +31,9 @@ class SignupRequestDtoTest {
     @DisplayName("유효성 검사 : 성공")
     void test1() {
         // given
-        String username = "user12345";
-        String password = "Spring03";
+        requestDto = new SignupRequestDto(TEST_USER_NAME, TEST_USER_PASSWORD);
 
         // when
-        requestDto = new SignupRequestDto(username, password);
         Set<ConstraintViolation<SignupRequestDto>> violations = validator.validate(requestDto);
 
         // then
@@ -43,16 +44,11 @@ class SignupRequestDtoTest {
     @DisplayName("유효성 검사 : 잘못된 아이디 입력으로 실패")
     void test2() {
         // given
-        String username = "user";
-        String password = "Spring03";
+        requestDto = new SignupRequestDto(TEST_USER_NAME, TEST_USER_PASSWORD);
 
         // when
-        requestDto = new SignupRequestDto(username, password);
         Set<ConstraintViolation<SignupRequestDto>> violations = validator.validate(requestDto);
 
-        for(ConstraintViolation<SignupRequestDto> violation : violations) {
-            System.out.println(violation);
-        }
         // then
         assertEquals(1, violations.size());
     }
@@ -61,16 +57,11 @@ class SignupRequestDtoTest {
     @DisplayName("유효성 검사 : 잘못된 아이디(글자 제한)와 비밀번호(글자 제한 & 길이 제한) 입력으로 실패")
     void test3() {
         // given
-        String username = "user";
-        String password = "spring";
+        requestDto = new SignupRequestDto(TEST_USER_NAME, TEST_USER_PASSWORD);
 
         // when
-        requestDto = new SignupRequestDto(username, password);
         Set<ConstraintViolation<SignupRequestDto>> violations = validator.validate(requestDto);
 
-        for(ConstraintViolation<SignupRequestDto> violation : violations) {
-            System.out.println(violation);
-        }
         // then
         assertEquals(3, violations.size());
     }

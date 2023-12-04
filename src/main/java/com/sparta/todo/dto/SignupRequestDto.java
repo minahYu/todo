@@ -4,11 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignupRequestDto {
     @Size(min = 4, max = 10, message = "4-10글자로 username을 설정해주세요")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[0-9])[a-z0-9]+$", message = "소문자와 숫자를 포함한 username을 입력해주세요.")
@@ -22,4 +21,9 @@ public class SignupRequestDto {
     @NotNull(message = "password를 입력해주세요")
     private String password;
 
+    @Builder
+    SignupRequestDto(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

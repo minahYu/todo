@@ -1,6 +1,7 @@
 package com.sparta.todo.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Builder
     public User(String username, String password) {
         this.username = username;
         this.password = password;
